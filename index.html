@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retas Cajeme | JFSTUDIOMX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #fb8c00; 
+            --secondary: #2e7d32;
+            --dark: #121212;
+            --google-blue: #4285F4;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            color: var(--dark);
+            /* Evita que el contenido se pegue a los bordes en móvil */
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER ADAPTABLE --- */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1544919982-b61976f0ba43?auto=format&fit=crop&w=1200');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            border-bottom: 6px solid var(--primary);
+        }
+
+        header h1 { 
+            font-family: 'Black Han Sans', sans-serif; 
+            font-size: clamp(2rem, 8vw, 3.5rem); /* Ajusta el tamaño según la pantalla */
+            margin: 0; 
+        }
+
+        /* --- FILTROS RESPONSIVOS --- */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            /* Permite scroll horizontal en móviles si los botones no caben */
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Ocultar barra de scroll en filtros para que se vea limpio */
+        .filter-container::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            padding: 12px 22px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            background: white;
+            transition: 0.3s;
+            flex-shrink: 0; /* Evita que los botones se aplasten en móvil */
+        }
+
+        .filter-btn.active {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+
+        /* --- GRID DE CANCHAS --- */
+        .grid {
+            display: grid;
+            /* En PC: 3 columnas, en Tablet: 2, en Celular: 1 */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- TARJETAS --- */
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+        }
+
+        /* Efecto solo para PC (en móvil el hover no existe) */
+        @media (min-width: 769px) {
+            .card:hover { transform: translateY(-8px); }
+        }
+
+        .card-img { 
+            height: 200px; 
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        .card-content { 
+            padding: 20px; 
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        .zona-tag { font-size: 0.75rem; color: #888; text-transform: uppercase; font-weight: 700; }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin: 8px 0;
+        }
+        .tag-basquet { background: var(--primary); }
+
+        .address { 
+            font-size: 0.9rem; 
+            color: #444; 
+            margin: 10px 0 20px 0; 
+            line-height: 1.4;
+        }
+
+        /* --- BOTÓN MAPS (GRANDE PARA EL DEDO EN MÓVIL) --- */
+        .btn-maps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--google-blue);
+            color: white;
+            text-decoration: none;
+            padding: 15px; /* Más alto para facilitar el click */
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
+        }
+
+        /* --- FOOTER --- */
+        footer { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: var(--dark); 
+            color: white; 
+            margin-top: 50px; 
+        }
+
+        footer p { margin: 5px 0; font-size: 1.1rem; }
+        footer .copyright { 
+            font-size: 0.8rem; 
+            opacity: 0.6; 
+            margin-top: 15px;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+
+        /* --- AJUSTES ESPECÍFICOS PARA MÓVIL --- */
+        @media (max-width: 480px) {
+            .grid { padding: 15px; gap: 15px; }
+            header { padding: 3rem 1rem; }
+            .card-img { height: 180px; }
+            .filter-container { justify-content: flex-start; padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RETAS <span>CAJEME</span></h1>
+        <p>Esperanza • Alameda • Villa Bonita</p>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">Todas</button>
+        <button class="filter-btn" data-filter="ESPERANZA">Esperanza</button>
+        <button class="filter-btn" data-filter="ALAMEDA">Alameda</button>
+        <button class="filter-btn" data-filter="VILLA BONITA">Villa Bonita</button>
+    </div>
+
+    <main id="courts-grid" class="grid"></main>
+
+    <footer>
+        <p>Aquí no hay excusas, solo hay canchas. 🏟️</p>
+        <div class="copyright">
+            © 2026 JFSTUDIOMX<br>
+            Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script>
+        const canchas = [
+            {
+                nombre: "Plaza Esperanza (2 Canchas)",
+                sector: "ESPERANZA",
+                tipo: "basquet",
+                direccion: "Plaza Hidalgo, Niños Heroes, Esperanza",
+                coords: "27.581260,-109.929499",
+                img: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Canchas Nueva Esperanza",
+                sector: "ESPERANZA",
+                tipo: "basquet",
+                direccion: "Plaza Hidalgo, Niños Heroes, Esperanza",
+                coords: "27.581260,-109.929499",
+                img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Cancha Plaza del Músico",
+                sector: "ESPERANZA",
+                tipo: "basquet",
+                direccion: "Plaza del Músico Profr Miguel Ángel Castro Cital",
+                coords: "27.578645,-109.938820",
+                img: "https://images.unsplash.com/photo-1519861531473-9200362f46b3?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Canchas Grope",
+                sector: "ALAMEDA",
+                tipo: "basquet",
+                direccion: "Antonio Valdez 1109, Cócorit",
+                coords: "27.576474,-109.946508",
+                img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Canchas Poncho",
+                sector: "ALAMEDA",
+                tipo: "basquet",
+                direccion: "California, Cócorit",
+                coords: "27.571568,-109.946257",
+                img: "https://images.unsplash.com/photo-1466193341027-56e68017ee2d?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Cancha Lunin",
+                sector: "ALAMEDA",
+                tipo: "basquet",
+                direccion: "Parque Alameda 2, California Alameda",
+                coords: "27.572059,-109.944338",
+                img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "LA BOMBERA",
+                sector: "VILLA BONITA",
+                tipo: "basquet",
+                direccion: "Villa Mágica, P.º de Los Vientos, Bonita",
+                coords: "27.567762,-109.941760",
+                img: "https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Canchas Pergon",
+                sector: "VILLA BONITA",
+                tipo: "basquet",
+                direccion: "Parque Bugambilia, C. California Nte. 652",
+                coords: "27.561950,-109.944967",
+                img: "https://images.unsplash.com/photo-1529900948638-02f04dc58297?auto=format&fit=crop&w=600"
+            },
+            {
+                nombre: "Canchas La Paz",
+                sector: "VILLA BONITA",
+                tipo: "basquet",
+                direccion: "Sector Villa Bonita, Esperanza",
+                coords: "27.561238,-109.940226",
+                img: "https://images.unsplash.com/photo-1542652694-40abf526446e?auto=format&fit=crop&w=600"
+            }
+        ];
+
+        function render(filter = 'all') {
+            const grid = document.getElementById('courts-grid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'all' ? canchas : canchas.filter(c => c.sector === filter);
+
+            filtered.forEach(c => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-img" style="background-image: url('${c.img}')"></div>
+                        <div class="card-content">
+                            <div class="zona-tag">📍 ${c.sector}</div>
+                            <span class="tag tag-${c.tipo}">${c.tipo}</span>
+                            <h3 style="margin: 5px 0;">${c.nombre}</h3>
+                            <p class="address">${c.direccion}</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=${c.coords}" target="_blank" class="btn-maps">
+                                🗺️ IR A LA UBICACIÓN
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                e.target.classList.add('active');
+                render(e.target.dataset.filter);
+            });
+        });
+
+        render();
+    </script>
+</body>
+</html>
